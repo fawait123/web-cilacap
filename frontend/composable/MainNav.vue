@@ -10,7 +10,7 @@ const page = usePage()
             :class="['text-sm font-medium transition-colors hover:text-primary cursor-pointer', page.props.route.uri == '/' ? 'text-primary' : '']">
             Dashboard
         </span>
-        <span @click="router.get(route('vote'))"
+        <span @click="router.get(route('vote', { _query: { filter: { type: 'subdistrict' }, view: 'subdistrict' } }))"
             :class="['text-sm font-medium transition-colors hover:text-primary cursor-pointer', page.props.route.uri.includes('vote') ? 'text-primary' : '']">
             Perolehan Suara
         </span>

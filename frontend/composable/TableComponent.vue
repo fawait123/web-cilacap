@@ -33,6 +33,11 @@ const table = useVueTable({
     columns: props.columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+        pagination: {
+            pageSize: props.data.length
+        }
+    }
 })
 
 const handleUndo = () => {

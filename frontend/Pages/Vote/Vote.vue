@@ -3,17 +3,19 @@ import CardComponent from '@/composable/CardComponent.vue';
 import TableComponent from '@/composable/TableComponent.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import PaslonItem from './Partials/PaslonItem.vue';
-import { districtData } from '@/database/regional';
-import { h, ref } from 'vue';
+import { h } from 'vue';
 import ItemName from './Partials/ItemName.vue';
 import { router } from '@inertiajs/vue3';
+import PaslonCard from './Partials/PaslonCard.vue';
+
+const props = defineProps({
+    regionals: { type: Object },
+    paslon: { type: Array }
+})
 
 defineOptions({
     layout: AppLayout
 })
-
-const data = ref(districtData)
 
 const columns = [
     {
@@ -22,15 +24,8 @@ const columns = [
         cell: ({ row }) => {
             return h(ItemName, {
                 name: row.getValue('name'),
-                onClickName: () => router.get('/vote/' + row.original.regionalID)
+                onClickName: () => router.get(route('vote', { _query: { filter: { parent_id: row.original.id }, view: 'village', subdistrictID: row.original.id } }))
             })
-        },
-    },
-    {
-        accessorKey: 'code',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Kode'),
-        cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium' }, row.getValue('code'))
         },
     },
     {
@@ -62,14 +57,10 @@ const columns = [
     <div>
 
         <Head title="Detail Perolehan Suara Kabupaten Cilacap" />
-        <div class="grid grid-cols-4 gap-4">
-            <PaslonItem src="/assets/images/1.jpg" name="PASLON 01" number="01" vote="700" percentage="40" />
-            <PaslonItem src="/assets/images/2.jpg" name="PASLON 02" number="02" vote="1922" percentage="60" />
-            <PaslonItem src="/assets/images/3.jpg" name="PASLON 03" number="03" vote="800" percentage="56" />
-            <PaslonItem src="/assets/images/4.jpg" name="PASLON 04" number="04" vote="2923" percentage="90" />
-        </div>
+        <PaslonCard :paslon-data="props.paslon" />
         <CardComponent title="Hitung Cepat" description="HDetail Perolehan Suara Kabupaten Cilacap">
-            <TableComponent :data="data" :columns="columns" :show-button-undo="false" :show-button-export="true" />
+            <TableComponent :data="props.regionals" :columns="columns" :show-button-undo="false"
+                :show-button-export="true" />
         </CardComponent>
     </div>
 </template>

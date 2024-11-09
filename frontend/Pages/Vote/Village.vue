@@ -2,16 +2,17 @@
 import CardComponent from '@/composable/CardComponent.vue';
 import TableComponent from '@/composable/TableComponent.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
-import PaslonItem from './Partials/PaslonItem.vue';
-import { pollstationData, villageData } from '@/database/regional';
+import { pollstationData } from '@/database/regional';
 import { h, ref } from 'vue';
-import ItemName from './Partials/ItemName.vue';
 import { router } from '@inertiajs/vue3';
+import PollstationItem from './Partials/PollstationItem.vue';
+import PaslonCard from './Partials/PaslonCard.vue';
 
 const props = defineProps({
-    subdistrictID: { type: String },
-    villageID: { type: String }
+    filter: { type: Object },
+    regionals: { type: Object },
+    request: { type: Object },
+    paslon: { type: Array }
 })
 
 defineOptions({
@@ -22,19 +23,12 @@ const data = ref(pollstationData)
 
 const columns = [
     {
-        accessorKey: 'name',
+        accessorKey: 'number',
         header: () => h('div', { class: 'text-left font-bold' }, 'TPS'),
         cell: ({ row }) => {
-            return h(ItemName, {
-                name: row.getValue('name')
+            return h(PollstationItem, {
+                name: row.getValue('number')
             })
-        },
-    },
-    {
-        accessorKey: 'code',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Kode'),
-        cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium' }, row.getValue('code'))
         },
     },
     {
@@ -61,26 +55,22 @@ const columns = [
 ]
 
 const handleUndo = () => {
-    router.get('/vote/' + props.subdistrictID)
+    window.history.back()
 }
 
 const handleButtonInputClick = () => {
-    router.get(`/vote/${props.subdistrictID}/${props.villageID}/input-vote`);
+    router.get(route('vote', { _query: { ...props.request, view: 'input-vote' } }));
 }
 
 </script>
 
 <template>
     <div>
-        <div class="grid grid-cols-4 gap-4">
-            <PaslonItem src="/assets/images/1.jpg" name="PASLON 01" number="01" vote="700" percentage="40" />
-            <PaslonItem src="/assets/images/2.jpg" name="PASLON 02" number="02" vote="1922" percentage="60" />
-            <PaslonItem src="/assets/images/3.jpg" name="PASLON 03" number="03" vote="800" percentage="56" />
-            <PaslonItem src="/assets/images/4.jpg" name="PASLON 04" number="04" vote="2923" percentage="90" />
-        </div>
+        <PaslonCard :paslon-data="props.paslon" />
         <CardComponent title="Hitung Cepat" description="Detail Perolehan Suara Desa">
-            <TableComponent :data="data" :columns="columns" @onUndo="handleUndo" @handleInput="handleButtonInputClick"
-                :showButtonUndo="true" :showButtonExport="false" :showButtonInput="true" />
+            <TableComponent :data="props.regionals" :columns="columns" @onUndo="handleUndo"
+                @handleInput="handleButtonInputClick" :showButtonUndo="true" :showButtonExport="false"
+                :showButtonInput="true" />
         </CardComponent>
     </div>
 </template>

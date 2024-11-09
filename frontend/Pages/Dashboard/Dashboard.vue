@@ -23,6 +23,10 @@ defineOptions({
     layout: AppLayout
 })
 
+const props = defineProps({
+    paslon: { type: Object }
+})
+
 </script>
 
 <template>
@@ -54,7 +58,7 @@ defineOptions({
                             <CardTitle>Overview</CardTitle>
                         </CardHeader>
                         <CardContent class="pl-2 flex justify-center items-center">
-                            <Overview />
+                            <Overview :paslonData="props.paslon" />
                         </CardContent>
                     </Card>
                     <Card class="col-span-3">
@@ -65,7 +69,7 @@ defineOptions({
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <RecentSales />
+                            <RecentSales :paslonData="props.paslon" />
                         </CardContent>
                     </Card>
                 </div>
