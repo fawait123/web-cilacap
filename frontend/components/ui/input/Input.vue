@@ -6,7 +6,8 @@ const props = defineProps({
     defaultValue: { type: [String, Number], required: false },
     modelValue: { type: [String, Number], required: false },
     class: { type: null, required: false },
-    type: { type: { String }, required: false }
+    type: { type: { String }, required: false },
+    errorMessage: { type: String, required: false }
 });
 
 const emits = defineEmits(['update:modelValue']);
@@ -23,4 +24,5 @@ const modelValue = useVModel(props, 'modelValue', emits, {
         props.class,
     )
         " />
+    <span class="text-sm text-red-500" v-if="props.errorMessage">{{ props.errorMessage }}</span>
 </template>

@@ -57,6 +57,7 @@ const handleClickButtonInput = () => {
                     <Undo />
                     Kembali
                 </Button>
+                <slot name="headerButton"></slot>
             </div>
             <div class="flex gap-3 items-center">
                 <Button v-show="props.showButtonExport">

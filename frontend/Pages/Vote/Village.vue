@@ -32,24 +32,10 @@ const columns = [
         },
     },
     {
-        accessorKey: 'vote',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Suara Masuk'),
+        accessorKey: 'number',
+        header: () => h('div', { class: 'text-left font-bold' }, 'Total Suara Masuk'),
         cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium' }, `${row.getValue('vote')} / ${row.getValue('total')}`)
-        },
-    },
-    {
-        accessorKey: 'total',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Suara Belum Masuk'),
-        cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium' }, (row.getValue('total') - row.getValue('vote')))
-        },
-    },
-    {
-        accessorKey: 'vote',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Persentase'),
-        cell: ({ row }) => {
-            return h('div', { class: 'text-left font-bold text-primary' }, `${Math.floor(row.getValue('vote') / row.getValue('total') * 100)}%`)
+            return h('div', { class: 'text-left font-bold text-[14px]' }, `${row.original.total}`)
         },
     }
 ]

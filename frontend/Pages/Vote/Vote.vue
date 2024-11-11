@@ -29,24 +29,24 @@ const columns = [
         },
     },
     {
-        accessorKey: 'vote',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Suara Masuk'),
+        accessorKey: 'name',
+        header: () => h('div', { class: 'text-left font-bold' }, 'Total TPS / Total TPS Masuk'),
         cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium' }, `${row.getValue('vote')} / ${row.getValue('total')}`)
+            return h('div', { class: 'text-left text-[14px] font-bold' }, `${row.original.total_tps} / ${row.original.total}`)
         },
     },
     {
-        accessorKey: 'total',
-        header: () => h('div', { class: 'text-left font-bold' }, 'Suara Belum Masuk'),
+        accessorKey: 'name',
+        header: () => h('div', { class: 'text-left font-bold' }, 'Total TPS Belum Masuk'),
         cell: ({ row }) => {
-            return h('div', { class: 'text-left font-medium' }, (row.getValue('total') - row.getValue('vote')))
+            return h('span', { class: 'text-left text-[14px] font-bold' }, (row.original.total_tps - row.original.total))
         },
     },
     {
-        accessorKey: 'vote',
+        accessorKey: 'name',
         header: () => h('div', { class: 'text-left font-bold' }, 'Persentase'),
         cell: ({ row }) => {
-            return h('div', { class: 'text-left font-bold text-primary' }, `${Math.floor(row.getValue('vote') / row.getValue('total') * 100)}%`)
+            return h('div', { class: 'text-left font-bold text-primary text-[14px]' }, `${Math.floor(row.original.total / row.original.total_tps * 100)}%`)
         },
     }
 ]

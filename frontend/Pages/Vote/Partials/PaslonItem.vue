@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 
 const props = defineProps({
     src: { type: null },
-    number: { type: Number },
+    number: { type: String },
     name: { type: String },
     vote: { type: Number },
     percentage: { type: Number }

@@ -24,7 +24,9 @@ defineOptions({
 })
 
 const props = defineProps({
-    paslon: { type: Object }
+    paslon: { type: Object },
+    data: { type: Object },
+    mapData: { type: Array }
 })
 
 </script>
@@ -41,16 +43,13 @@ const props = defineProps({
                 <TabsTrigger value="overview">
                     Dashboard
                 </TabsTrigger>
-                <TabsTrigger value="analytics">
-                    Map View
-                </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" class="space-y-4">
                 <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <CardItem title="Total Suara" :total="3000" />
-                    <CardItem title="Suara Masuk" :total="2000" />
-                    <CardItem title="Suara Belum Masuk" :total="1000" />
-                    <CardItem title="Persentase" :total="2000 / 3000 * 100" />
+                    <CardItem title="Total TPS" :total="props.data.total_tps" />
+                    <CardItem title="Total TPS Masuk" :total="props.data.total" />
+                    <CardItem title="Total TPS Belum Masuk" :total="props.data.total_tps - props.data.total" />
+                    <CardItem title="Persentase" :total="props.data.total / props.data.total_tps * 100" />
                 </div>
                 <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                     <Card class="col-span-4">
@@ -73,16 +72,6 @@ const props = defineProps({
                         </CardContent>
                     </Card>
                 </div>
-            </TabsContent>
-            <TabsContent value="analytics" class="space-y-4">
-                <Suspense>
-                    <template #default>
-                        <MapComponent />
-                    </template>
-                    <template #fallback>
-                        <span>Loading...</span>
-                    </template>
-                </Suspense>
             </TabsContent>
         </Tabs>
     </div>
