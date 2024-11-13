@@ -41,7 +41,7 @@ const columns = [
 ]
 
 const handleUndo = () => {
-    window.history.back()
+    router.get(route('vote', { _query: { filter: { parent_id: props.filter.subdistrictID }, view: 'village', subdistrictID: props.filter.subdistrictID } }))
 }
 
 const handleButtonInputClick = () => {

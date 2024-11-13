@@ -53,4 +53,13 @@ class RegionalService
 
         return $regionals;
     }
+
+    public function dataSubDistrictOnly()
+    {
+        $regionals = Regionals::select('regionals.*')
+            ->where('type', 'subdistrict')
+            ->get();
+
+        return $regionals;
+    }
 }

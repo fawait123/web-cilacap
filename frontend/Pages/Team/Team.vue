@@ -1,82 +1,79 @@
 <script setup>
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
 import AppLayout from '@/layouts/AppLayout.vue';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { Edit, PlusCircle, SaveIcon, Trash } from 'lucide-vue-next';
+import { DialogOverlay } from 'radix-vue';
+import { ref } from 'vue';
 
 defineOptions({
     layout: AppLayout
 })
 const props = defineProps({
-    teams: { type: Object }
+    teams: { type: Object },
+    subdistricts: { type: Array }
 })
+const openModal = ref(false)
 
 const formRef = useForm({
     username: '',
     name: '',
     password: '',
     role: 'user',
-    access: []
+    access: [],
+    id: null
 })
 
-const invoices = [
-    {
-        invoice: 'INV001',
-        paymentStatus: 'Paid',
-        totalAmount: '$250.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV002',
-        paymentStatus: 'Pending',
-        totalAmount: '$150.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV003',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$350.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV004',
-        paymentStatus: 'Paid',
-        totalAmount: '$450.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV005',
-        paymentStatus: 'Paid',
-        totalAmount: '$550.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV006',
-        paymentStatus: 'Pending',
-        totalAmount: '$200.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-]
+const formDelete = useForm({})
+
+const updateOpen = (value) => {
+    openModal.value = value
+}
+
+const clickEdit = (team) => {
+    formRef.username = team.username
+    formRef.name = team.name
+    formRef.access = team.access.map((item) => item.id)
+    formRef.id = team.id
+    updateOpen(true)
+}
+
+const handleSubmit = () => {
+    if (formRef.id != null) {
+        formRef.put(route('team.update', formRef.id), {
+            onSuccess: () => {
+                updateOpen(false)
+            },
+        })
+    } else {
+        formRef.post(route('team.store'), {
+            onSuccess: () => {
+                updateOpen(false)
+            },
+        })
+    }
+}
+
+const clickDelete = (team) => {
+    formDelete.delete(route('team.destroy', team.id), {
+        onSuccess: () => {
+            console.log('success')
+        }
+    })
+}
 </script>
 
 <template>
@@ -84,54 +81,56 @@ const invoices = [
         <CardHeader>
             <CardTitle class="flex justify-between items-center">
                 <span>Team</span>
-                <Dialog>
+                <Dialog :open="openModal" @update:open="updateOpen">
                     <DialogTrigger>
                         <Button>
                             Tambah
                             <PlusCircle />
                         </Button>
                     </DialogTrigger>
+                    <DialogOverlay />
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Edit profile</DialogTitle>
+                            <DialogTitle>Modal Team</DialogTitle>
                             <DialogDescription>
-                                Make changes to your profile here. Click save when you're done.
+                                Masukan data team di bawah ini.
                             </DialogDescription>
                         </DialogHeader>
                         <div class="grid gap-6">
                             <div class="grid gap-2">
                                 <Label>Nama</Label>
-                                <Input placeholder="Masukan nama" />
+                                <Input placeholder="Masukan nama" v-model="formRef.name" />
+                                <span class="text-sm text-red-500" v-if="formRef.errors.name">{{ formRef.errors.name
+                                    }}</span>
                             </div>
                             <div class="grid gap-2">
                                 <Label>Username</Label>
-                                <Input placeholder="Masukan username" />
+                                <Input placeholder="Masukan username" v-model="formRef.username" />
+                                <span class="text-sm text-red-500" v-if="formRef.errors.username">{{
+                                    formRef.errors.username }}</span>
                             </div>
                             <div class="grid gap-2">
                                 <Label>Password</Label>
-                                <Input placeholder="Masukan password" />
+                                <Input placeholder="Masukan password" v-model="formRef.password" />
+                                <span class="text-sm text-red-500" v-if="formRef.errors.password">{{
+                                    formRef.errors.password }}</span>
                             </div>
-                            <div class="grid gap-2">
-                                <Label>Akses</Label>
-                                <Select multiple="multiple" v-model="formRef.access">
-                                    <SelectTrigger class="w-full">
-                                        <SelectValue placeholder="Select a fruit" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectItem value="apple">
-                                                Apple
-                                            </SelectItem>
-                                            <SelectItem value="banan">
-                                                Banan
-                                            </SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+                            <div class="grid grid-cols-2 gap-2">
+                                <span>{{ formRef.errors.access }}</span>
+                                <div class="flex items-center space-x-2" v-for="(region, i) in props.subdistricts"
+                                    :key="region.id">
+                                    <Checkbox :checked="formRef.access.includes(region.id)" :id="region.id"
+                                        :value="region.id?.toString()" :name="`access[${i}]`"
+                                        @update:checked="(isChecked) => isChecked ? formRef.access.push(region.id) : formRef.access.splice(formRef.access.indexOf(region.id), 1)" />
+                                    <label :for="region.id"
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        {{ region.name }}
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button>
+                            <Button @click="handleSubmit">
                                 Simpan
                                 <SaveIcon />
                             </Button>
@@ -171,10 +170,10 @@ const invoices = [
                         </TableCell>
                         <TableCell>
                             <div class="flex gap-4" v-if="team.role != 'admin'">
-                                <Button variant="outline">
+                                <Button variant="outline" @click="clickEdit(team)">
                                     <Edit />
                                 </Button>
-                                <Button>
+                                <Button @click="clickDelete(team)">
                                     <Trash />
                                 </Button>
                             </div>

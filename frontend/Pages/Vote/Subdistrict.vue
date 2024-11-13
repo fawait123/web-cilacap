@@ -54,7 +54,7 @@ const columns = [
 ]
 
 const handleUndo = () => {
-    window.history.back()
+    router.get(route('vote', { _query: { filter: { type: 'subdistrict' }, view: 'subdistrict' } }))
 }
 </script>
 

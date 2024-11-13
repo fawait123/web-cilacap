@@ -2,7 +2,6 @@
 import CardComponent from '@/composable/CardComponent.vue';
 import TableComponent from '@/composable/TableComponent.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import PaslonItem from './Partials/PaslonItem.vue';
 import { h } from 'vue';
 import { Input } from '@/components/ui/input';
 import PollstationItem from './Partials/PollstationItem.vue';
@@ -10,12 +9,13 @@ import PaslonCard from './Partials/PaslonCard.vue';
 import HeaderPaslon from './Partials/HeaderPaslon.vue';
 import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-vue-next';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
     regionals: { type: Array },
     paslon: { type: Array },
-    errors: { type: Object, required: false }
+    errors: { type: Object, required: false },
+    request: { type: Object }
 })
 
 const formRef = useForm(props.regionals.map((item) => {
@@ -29,7 +29,7 @@ const formRef = useForm(props.regionals.map((item) => {
         paslonData: props.paslon.map((item) => {
             return {
                 paslonID: item.id,
-                value: null,
+                value: Math.floor(Math.random() * (100 - 50 + 1)) + 23,
                 name: item.name
             }
         })
@@ -72,16 +72,14 @@ columns.unshift({
     },
 })
 
-
-
 const handleUndo = () => {
-    window.history.back()
+    router.get(router.get(route('vote', { _query: { ...props.request, view: 'tps' } })))
 }
 
 const handleSubmit = () => {
     formRef.post(route('vote.store'), {
         onFinish: () => {
-            console.log('finish')
+            router.get(router.get(route('vote', { _query: { ...props.request, view: 'tps' } })))
         },
         onError: () => {
             console.log('error')
