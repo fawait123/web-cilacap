@@ -1,5 +1,4 @@
 <script setup>
-import mapDatas from '@/database/mapdata.json';
 import { ref, onMounted } from 'vue';
 
 const props = defineProps({
@@ -47,7 +46,9 @@ const chartOptions = ref({
 // Fungsi untuk memuat data peta secara dinamis
 async function loadMapData() {
     try {
-        chartOptions.value.chart.map = mapDatas;
+
+        chartOptions.value.chart.map = await fetch('/database/mapData.json')
+            .then((res) => res.json());
 
         // Menambahkan data kecamatan setelah peta dimuat
         chartOptions.value.series[0].data = props.mapData.map((item) => {

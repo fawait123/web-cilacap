@@ -39,7 +39,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'route' => $request->route(),
             'user' => $request->user(),
-            'back' => redirect()->back()->getTargetUrl()
+            'current' => $request->fullUrl(),
+            'search' => $request->search
         ]);
     }
 }

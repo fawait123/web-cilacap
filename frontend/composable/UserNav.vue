@@ -19,6 +19,14 @@ import { router, usePage } from '@inertiajs/vue3';
 
 const page = usePage()
 
+const onLogout = () => {
+    router.post(route('logout'), {}, {
+        onSuccess: () => {
+            router.get(route('dashboard'));
+        }
+    })
+}
+
 </script>
 
 <template>
@@ -50,7 +58,7 @@ const page = usePage()
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem @click="onLogout">
                 Log out
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>

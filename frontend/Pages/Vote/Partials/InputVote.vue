@@ -1,10 +1,9 @@
 <script setup>
 import CardComponent from '@/composable/CardComponent.vue';
 import TableComponent from '@/composable/TableComponent.vue';
-import { pollstationData } from '@/database/regional';
 import { h, ref } from 'vue';
 import ItemName from './ItemName.vue';
-const data = ref(pollstationData)
+const data = ref([])
 const props = defineProps({
     subdistrictID: { type: String }
 })

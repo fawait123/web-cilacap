@@ -16,6 +16,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { DownloadIcon, PencilIcon, Undo } from 'lucide-vue-next';
+import { router, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 
 const props = defineProps({
@@ -40,12 +42,18 @@ const table = useVueTable({
     }
 })
 
+const searchRef = ref(usePage().props?.search)
+
 const handleUndo = () => {
     emmit('onUndo');
 }
 
 const handleClickButtonInput = () => {
     emmit('handleInput');
+}
+
+const handleChange = (data) => {
+    router.get(`${usePage().props.current}&search=${data}`)
 }
 </script>
 
@@ -64,11 +72,12 @@ const handleClickButtonInput = () => {
                     <DownloadIcon />
                     Export
                 </Button>
-                <Button v-show="props.showButtonInput" @click="handleClickButtonInput">
+                <Button v-show="props.showButtonInput && usePage().props.user" @click="handleClickButtonInput">
                     <PencilIcon />
                     Input Hitung Suara
                 </Button>
-                <Input class="max-w-[200px]" placeholder="Masukan pencarian..." />
+                <Input class="max-w-[200px]" @handleEnter="handleChange" v-model="searchRef"
+                    placeholder="Masukan pencarian..." />
             </div>
         </div>
         <Table>

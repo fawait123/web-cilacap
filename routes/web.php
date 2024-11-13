@@ -15,6 +15,7 @@ Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
 // auth
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'actionLogin'])->name('login.action');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::get('/import/regionals', [ImportController::class, 'regionals'])->name('import.regionals');
 
 Route::group(['middleware' => 'auth'], function () {

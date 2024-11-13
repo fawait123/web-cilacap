@@ -3,7 +3,6 @@
 namespace App\Http\Services;
 
 use App\Models\Regionals;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class RegionalService
 {
@@ -13,7 +12,13 @@ class RegionalService
             ->selectRaw($this->queryRaw())
             ->selectRaw($this->totalPollstation())
             ->filter()
-            ->get();
+            ->access()
+            ->search(['name'])
+            ->paginate(
+                10,
+                ['*'],
+                'pagination'
+            )->withQueryString();
 
         return $regionals;
     }

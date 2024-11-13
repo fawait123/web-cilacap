@@ -2,8 +2,7 @@
 import CardComponent from '@/composable/CardComponent.vue';
 import TableComponent from '@/composable/TableComponent.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { pollstationData } from '@/database/regional';
-import { h, ref } from 'vue';
+import { h } from 'vue';
 import { router } from '@inertiajs/vue3';
 import PollstationItem from './Partials/PollstationItem.vue';
 import PaslonCard from './Partials/PaslonCard.vue';
@@ -19,7 +18,6 @@ defineOptions({
     layout: AppLayout
 })
 
-const data = ref(pollstationData)
 
 const columns = [
     {
