@@ -23,6 +23,19 @@ class RegionalService
         return $regionals;
     }
 
+    public function excelData()
+    {
+        $regionals = Regionals::select('regionals.*')
+            ->selectRaw('(select count(distinct v.pollstationID) from votes v where v.subdistrictID = regionals.id) as total')
+            ->selectRaw('(select count(distinct tps.id) from pollstations tps where tps.subdistrictID = regionals.id) as total_tps')
+            ->selectRaw("(select COALESCE(sum(v.vote),0) from votes v where v.subdistrictID = regionals.id) vote")
+            ->access()
+            ->where('type', 'subdistrict')
+            ->get();
+
+        return $regionals;
+    }
+
     public function queryRaw()
     {
         switch (request('view')) {

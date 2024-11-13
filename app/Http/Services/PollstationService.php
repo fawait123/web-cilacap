@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Resources\VoteCollection;
 use App\Models\Pollstation;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -12,9 +13,10 @@ class PollstationService
         $pollstations = Pollstation::select('pollstations.*')
             ->selectRaw($this->queryRaw())
             ->filter()
+            ->with('document')
             ->get();
 
-        return $pollstations;
+        return request('view') == "input-vote" ? new VoteCollection($pollstations) : $pollstations;
     }
 
     public function queryRaw()
@@ -26,5 +28,14 @@ class PollstationService
             default:
                 return '(select 3055) as total';
         }
+    }
+
+    public function vote()
+    {
+        $pollstations = Pollstation::select('pollstations.*')
+            ->filter()
+            ->get();
+
+        return new VoteCollection($pollstations);
     }
 }
