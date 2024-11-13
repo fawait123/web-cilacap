@@ -29,7 +29,7 @@ const formRef = useForm(props.regionals.map((item) => {
         paslonData: props.paslon.map((item) => {
             return {
                 paslonID: item.id,
-                value: Math.floor(Math.random() * (50 - 10 + 1)) + 20,
+                value: null,
                 name: item.name
             }
         })

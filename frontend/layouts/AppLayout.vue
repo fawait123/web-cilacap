@@ -15,11 +15,10 @@ const props = defineProps({
     <div class="flex-col md:flex">
         <div class="border-b">
             <div class="flex h-16 items-center px-4">
-                <TeamSwitcher v-if="props.user" />
                 <MainNav class="mx-6" />
                 <div class="ml-auto flex items-center space-x-4">
                     <UserNav v-if="props.user" />
-                    <Button @click="router.get(route('auth.login'))">
+                    <Button @click="router.get(route('auth.login'))" v-else>
                         Masuk
                         <ScanFace />
                     </Button>

@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call(
-            PaslonSeeder::class
+            PaslonSeeder::class,
+            UserSeeder::class
         );
     }
 }
