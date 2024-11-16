@@ -6,6 +6,7 @@ import { h } from 'vue';
 import { router } from '@inertiajs/vue3';
 import PollstationItem from './Partials/PollstationItem.vue';
 import PaslonCard from './Partials/PaslonCard.vue';
+import DocumentItem from './Partials/DocumentItem.vue';
 
 const props = defineProps({
     filter: { type: Object },
@@ -34,6 +35,15 @@ const columns = [
         header: () => h('div', { class: 'text-left font-bold' }, 'Total Suara Masuk'),
         cell: ({ row }) => {
             return h('div', { class: 'text-left font-bold text-[14px]' }, `${row.original.total}`)
+        },
+    },
+    {
+        accessorKey: 'number',
+        header: () => h('div', { class: 'text-left font-bold' }, 'Document C'),
+        cell: ({ row }) => {
+            return h(DocumentItem, {
+                data: row.original
+            })
         },
     }
 ]

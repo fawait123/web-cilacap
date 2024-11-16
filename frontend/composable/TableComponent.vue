@@ -55,6 +55,10 @@ const handleClickButtonInput = () => {
 const handleChange = (data) => {
     router.get(`${usePage().props.current}&search=${data}`)
 }
+
+const downloadExcel = () => {
+    window.open(route('vote.download'), '_blank')
+}
 </script>
 
 <template>
@@ -68,7 +72,7 @@ const handleChange = (data) => {
                 <slot name="headerButton"></slot>
             </div>
             <div class="flex gap-3 items-center">
-                <Button v-show="props.showButtonExport">
+                <Button v-show="props.showButtonExport" @click="downloadExcel">
                     <DownloadIcon />
                     Export
                 </Button>

@@ -11,6 +11,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/map-view', [DashboardController::class, 'mapView'])->name('map.view');
 Route::get('/vote', [VoteController::class, 'subdistrict'])->name('vote');
 Route::post('/vote', [VoteController::class, 'store'])->name('vote.store');
+Route::get('/vote/download', [VoteController::class, 'exportExcel'])->name('vote.download');
 
 // auth
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
