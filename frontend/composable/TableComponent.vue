@@ -76,9 +76,9 @@ const downloadExcel = () => {
                     <DownloadIcon />
                     Export
                 </Button>
-                <Button v-show="props.showButtonInput && usePage().props.user" @click="handleClickButtonInput">
+                <Button v-show="props.showButtonInput" @click="handleClickButtonInput">
                     <PencilIcon />
-                    Input Hitung Suara
+                    {{ usePage().props.user ? 'Input Hitung Suara' : 'Lihat Detail Suara' }}
                 </Button>
                 <Input class="max-w-[200px]" @handleEnter="handleChange" v-model="searchRef"
                     placeholder="Masukan pencarian..." />

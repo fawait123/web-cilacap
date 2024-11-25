@@ -45,6 +45,13 @@ const columns = [
                 data: row.original
             })
         },
+    },
+    {
+        accessorKey: 'user_input',
+        header: () => h('div', { class: 'text-left font-bold' }, 'Di input oleh'),
+        cell: ({ row }) => {
+            return h('span',{class:'text-left'}, row.original.user_input)
+        },
     }
 ]
 

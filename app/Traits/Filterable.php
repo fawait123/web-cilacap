@@ -19,7 +19,7 @@ trait Filterable
 
     public function scopeAccess(Builder $query)
     {
-        if (Auth::user() && Auth::user()->role != "admin") {
+        if (Auth::user() && Auth::user()->role != "admin" && (isset(request('filter')['type']) && request('filter')['type'] == "subdistrict")) {
             $query->whereIn('id', json_decode(Auth::user()->access));
         }
     }

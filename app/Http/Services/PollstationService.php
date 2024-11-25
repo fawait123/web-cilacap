@@ -12,6 +12,7 @@ class PollstationService
     {
         $pollstations = Pollstation::select('pollstations.*')
             ->selectRaw($this->queryRaw())
+            ->selectRaw('(select v.user_input from votes v where v.pollstationID = pollstations.id limit 1) as user_input')
             ->filter()
             ->with('document')
             ->get();

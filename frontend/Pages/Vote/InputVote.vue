@@ -9,7 +9,7 @@ import PaslonCard from './Partials/PaslonCard.vue';
 import HeaderPaslon from './Partials/HeaderPaslon.vue';
 import { Button } from '@/components/ui/button';
 import { Save } from 'lucide-vue-next';
-import { router, useForm } from '@inertiajs/vue3';
+import { router, useForm, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
     regionals: { type: Array },
@@ -53,6 +53,7 @@ const columns = props.paslon.map((item, i) => {
                 placeholder: row.getValue('number') > 10 ? '0' + row.getValue('number') : '00' + row.getValue('number'),
                 class: 'w-full',
                 type: 'number',
+                disabled:!usePage().props.user,
                 modelValue: formRef[row.index].paslonData[i].value,
                 'onUpdate:modelValue': (value) => { formRef[row.index].paslonData[i].value = value },
                 errorMessage: props.errors[errorMessage] || null
@@ -80,6 +81,7 @@ columns.unshift({
                 placeholder: row.getValue('number') > 10 ? '0' + row.getValue('number') : '00' + row.getValue('number'),
                 class: 'w-full',
                 type: 'file',
+                disabled:!usePage().props.user,
                 onOnInput: (value) => { formRef[row.index].document = value.target.files[0] },
             })
         },
@@ -110,7 +112,7 @@ const handleSubmit = () => {
             <TableComponent :data="props.regionals.data" :columns="columns" @onUndo="handleUndo"
                 :showButtonUndo="!formRef.processing" :showButtonExport="false">
                 <template #headerButton>
-                    <Button @click="handleSubmit" :disabled="formRef.processing">
+                    <Button @click="handleSubmit" :disabled="formRef.processing" v-show="usePage().props.user">
                         <Save />
                         {{ formRef.processing ? 'Loading...' : 'Simpan' }}
                     </Button>

@@ -87,6 +87,7 @@ class VoteController extends Controller
                             'pollstationID' => $pollstation['pollstationID'],
                             'paslonID' => $paslon['paslonID'],
                             'vote' => $paslon['value'],
+                            'user_input'=>auth()->user()->name
                         ]
                     );
                 endforeach;
