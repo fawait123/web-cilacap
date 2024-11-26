@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Models\Paslon;
+use Illuminate\Support\Facades\DB;
 
 class PaslonService
 {
@@ -11,6 +12,7 @@ class PaslonService
         $regionals = Paslon::select('paslons.*')
             ->selectRaw($this->queryRaw())
             ->selectRaw($this->totalPollstation())
+            ->orderByDesc(DB::raw('total'))
             ->get();
 
         return $regionals;
