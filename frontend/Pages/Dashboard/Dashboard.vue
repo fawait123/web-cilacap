@@ -1,6 +1,5 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Button } from '@/components/ui/button'
 import {
     Card,
     CardContent,
@@ -17,7 +16,8 @@ import {
 import Overview from '@/composable/Overview.vue'
 import RecentSales from '@/composable/RecentSales.vue'
 import CardItem from './Partials/CardItem.vue';
-import MapComponent from '@/composable/MapComponent.vue';
+import { onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
 
 defineOptions({
     layout: AppLayout
@@ -28,6 +28,18 @@ const props = defineProps({
     data: { type: Object },
     mapData: { type: Array }
 })
+
+onMounted(()=>{
+    refetchData()
+})
+
+
+const refetchData = ()=>{
+    setInterval(()=>{
+        console.log('reload data /20 detik')
+        router.reload()
+    },1200000)
+}
 
 </script>
 
