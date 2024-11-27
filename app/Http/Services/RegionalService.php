@@ -40,9 +40,9 @@ class RegionalService
     {
         switch (request('view')) {
             case 'subdistrict':
-                return '(select count(distinct v.pollstationID) from votes v where v.subdistrictID = regionals.id) as total';
+                return '(select count(distinct v.pollstationID) from votes v where v.subdistrictID = regionals.id and v.vote != 0) as total';
             case 'village':
-                return '(select count(distinct v.pollstationID) from votes v where v.villageID = regionals.id and v.subdistrictID = regionals.parent_id) as total';
+                return '(select count(distinct v.pollstationID) from votes v where v.villageID = regionals.id and v.subdistrictID = regionals.parent_id and v.vote != 0) as total';
 
             default:
                 return '(select "0" ) as total';
@@ -65,7 +65,7 @@ class RegionalService
     public function subDistrict()
     {
         $regionals = Regionals::select('regionals.*')
-            ->selectRaw('(select count(distinct v.pollstationID) from votes v where v.subdistrictID = regionals.id) total')
+            ->selectRaw('(select count(distinct v.pollstationID) from votes v where v.subdistrictID = regionals.id and v.vote != 0) total')
             ->where('type', 'subdistrict')
             ->get();
 

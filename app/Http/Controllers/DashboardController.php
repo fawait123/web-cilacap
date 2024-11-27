@@ -37,6 +37,7 @@ class DashboardController extends Controller
             'total_tps' => Pollstation::count(),
             'total' =>  DB::table('votes')
                 ->distinct('pollstationID')
+                ->where('vote', '!=', 0)
                 ->count('pollstationID')
         ];
     }

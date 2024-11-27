@@ -24,7 +24,7 @@ class PollstationService
     {
         switch (request('view')) {
             case 'tps':
-                return '(select COALESCE(sum(v.vote),0) from votes v where v.pollstationID = pollstations.id and v.villageID = pollstations.villageID and v.subdistrictID = pollstations.subdistrictID) total';
+                return '(select COALESCE(sum(v.vote),0) from votes v where v.pollstationID = pollstations.id and v.villageID = pollstations.villageID and v.subdistrictID = pollstations.subdistrictID and v.vote != 0) total';
 
             default:
                 return '(select 3055) as total';
