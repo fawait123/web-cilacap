@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard/Dashboard', [
-            'paslon' => fn() => $this->paslonService->data(),
+            'paslon' => fn() => $this->paslonService->dashboard(),
             'data' => fn() => $this->getData(),
         ]);
     }
