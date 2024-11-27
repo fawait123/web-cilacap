@@ -12,7 +12,6 @@ class PaslonService
         $regionals = Paslon::select('paslons.*')
             ->selectRaw($this->queryRaw())
             ->selectRaw($this->totalPollstation())
-            ->orderByDesc(DB::raw('total'))
             ->get();
 
         return $regionals;
